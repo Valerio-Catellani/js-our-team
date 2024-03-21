@@ -97,9 +97,9 @@ function app() {
 function createCard(userName, userSurname = "", userRole = "", userImgUrl = "") {
     const Card = document.createElement("div");
     Card.className = "card m-3 border-3";
-    Card.style = "min-width:300px; width:30%";
+    Card.style = "width:400px; height:550px";
     const CardImg = document.createElement("img");
-    CardImg.className = "img-fluid bg-"
+    CardImg.className = "img-fluid h-75"
     CardImg.setAttribute("src", `${userImgUrl}`);
     CardImg.setAttribute("alt", `${userName}`);
     const CardBody = document.createElement('div');
@@ -120,7 +120,7 @@ function createAddCard() {
     const Card = document.createElement("div");
     Card.className = "card m-3 border-3";
     Card.id = "add-member";
-    Card.style = "min-width:300px; width:30%; cursor:pointer";
+    Card.style = "width:400px; height:550px; cursor:pointer";
     const CardImg = document.createElement("div");
     CardImg.className = "bg-dark-subtle d-flex align-items-center justify-content-center display-1 text-white"
     CardImg.innerHTML = '<i class="fa-solid fa-user-plus"></i>'
@@ -132,14 +132,15 @@ function createAddCard() {
     CardTitle.innerHTML = `Add a new Member`;
     CardBody.append(CardTitle);
     Card.append(CardImg, CardBody)
-    Card.addEventListener('click', () => document.getElementById('app').append(addUser()))
+    Card.addEventListener('click', () => document.getElementById('app').append(addUserModal()))
     return Card;
 }
 
-//^FUNCTION: addUser
+//^FUNCTION: addUserModal
 
-function addUser() {
+function addUserModal() {
     //--- background
+    let casa;
     const BackGroundBlack = document.createElement('div');
     BackGroundBlack.id = "hype-modal"
     BackGroundBlack.className = "position-absolute w-100 h-100 overflow-hidden d-flex align-items-center justify-conentent-center position-fixed";
@@ -158,14 +159,28 @@ function addUser() {
         Banner.append(generateInformation(element))
     }
     //--- SendButton
+    const Buttons = document.createElement('div')
+
     const SendButton = document.createElement('button')
-    SendButton.id = "end"
-    SendButton.className = `btn btn-lg`
-    SendButton.innerHTML = "Play Again!"
+    SendButton.id = "send-button"
+    SendButton.disabled = true
+    SendButton.className = `btn btn-lg btn-primary mx-2`
+    SendButton.innerHTML = "Add the New Member!"
     SendButton.addEventListener('click', () => {
+        addNewMember(document.querySelectorAll(".user-input-value"))
         document.getElementById("hype-modal").remove()
     })
-    Banner.append(SendButton)
+
+    const CancelButton = document.createElement('button')
+    CancelButton.id = "cancel-button"
+    CancelButton.className = `btn btn-lg btn-danger  mx-2`
+    CancelButton.innerHTML = "Cancel"
+    CancelButton.addEventListener('click', () => {
+        document.getElementById("hype-modal").remove()
+    })
+
+    Buttons.append(SendButton, CancelButton)
+    Banner.append(Buttons)
     BackGroundBlack.appendChild(Banner);
     return BackGroundBlack
 }
@@ -177,18 +192,55 @@ function generateInformation(key) {
     //--- container (label + input)
     const container = document.createElement('div');
     container.className = "my-3 answer-container w-75";
-    //--- 
+    //--- label
     const label = document.createElement('label');
-    label.htmlFor = `user-input-${key}`;
+    label.htmlFor = `${key}`;
     label.className = "form-label";
     label.innerHTML = `Insert the ${key} of the new member`
     const input = document.createElement('input');
-
-    input.id = `user-input-${key}`;
+    //--- input
+    input.id = `${key}`;
     input.className = "user-input-value form-control border-danger bg-danger-subtle border-4";
     input.setAttribute("type", key !== "userImg" ? "text" : "file");
+    input.addEventListener('input', () => {
+        if (input.value !== "" && isNaN(input.value)) {
+            input.classList.add("checked", "bg-success-subtle", "border-success");
+            input.classList.remove("bg-danger-subtle", "border-danger")
+            controll()
+        } else if (input.value === "" || isNaN(input.value)) {
+            input.classList.add("bg-danger-subtle", "border-danger");
+            input.classList.remove("checked", "bg-success-subtle", "border-success");
+            controll()
+        }
+    })
+
     container.append(label, input);
     return container
+}
+
+/**
+ * controll that all value are check (valid), before enable the send button
+ */
+function controll() {
+    document.getElementsByClassName('checked').length < 4 ? document.getElementById('send-button').disabled = true : document.getElementById('send-button').disabled = false
+}
+
+function addNewMember(arrayOfValue) {
+    const NewMember = { //istance new object
+        name: null,
+        surname: null,
+        role: null,
+        userImg: null,
+    }
+    for (let element of arrayOfValue) {
+        NewMember[element.id] = element.value //i take the key of the existing one and put on id of the input, so i'm sure that element.id is what i want put in it.
+    }
+    //console.log(NewMember);
+    teamMembers.push(NewMember);
+    // let userImg = `/resources/img/${NewMember.userImg}`
+    console.log(userImg);
+    let container = document.getElementById('card-container');
+    container.insertBefore(createCard(NewMember.name, NewMember.surname, NewMember.role, NewMember.userImg), container.children[container.children.length - 1])
 }
 
 
