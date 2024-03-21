@@ -79,7 +79,18 @@ app()
 function app() {
     const CardContianer = document.createElement('div')
     CardContianer.id = "card-container";
-    CardContianer.className = "d-flex flex-wrap align-items-center justify-content-center"
+    CardContianer.className = "d-flex flex-wrap align-items-center justify-content-center";
+    const Title = document.createElement('div');
+    Title.className = "d-flex flex-column align-items-center w-75"
+    const MainTitle = document.createElement('h1');
+    MainTitle.className = "display-1 fw-bold"
+    MainTitle.innerHTML = "Our Team";
+    const Subtitle = document.createElement('p');
+    Subtitle.className = "fw-bold"
+
+    Subtitle.innerHTML = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non eius debitis eaque consequatur saepe soluta unde, Lorem ipsum dolor sit amet consectetur adipisicing elit. Non eius debitis eaque consequatur saepe soluta unde,Lorem ipsum dolor sit amet consectetur adipisicing elit. Non eius debitis eaque consequatur saepe soluta unde,Lorem ipsum dolor sit amet consectetur adipisicing elit. Non eius debitis eaque consequatur saepe soluta unde,delectus quae reiciendis mollitia."
+    Title.append(MainTitle, Subtitle)
+    CardContianer.append(Title)
     for (let element of teamMembers) {
         let userImg = `/resources/img/${element.userImg}`
         CardContianer.append(createCard(element.name, element.surname, element.role, userImg))
