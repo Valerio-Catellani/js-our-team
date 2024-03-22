@@ -92,7 +92,7 @@ function app() {
     Title.append(MainTitle, Subtitle)
     CardContianer.append(Title)
     for (let element of teamMembers) {
-        let userImg = `/resources/img/${element.userImg}`
+        let userImg = `resources/img/${element.userImg}`
         CardContianer.append(createCard(element.name, element.surname, element.role, userImg))
     }
     CardContianer.append(createAddCard())
@@ -247,7 +247,7 @@ function addNewMember(arrayOfValue) {
     }
     //console.log(NewMember);
     teamMembers.push(NewMember);
-    let userImg = `/resources/img/${NewMember.userImg}`
+    let userImg = `resources/img/${NewMember.userImg}`
     let container = document.getElementById('card-container');
     container.insertBefore(createCard(NewMember.name, NewMember.surname, NewMember.role, userImg), container.children[container.children.length - 1])
 }
