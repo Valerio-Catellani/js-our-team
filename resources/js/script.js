@@ -97,7 +97,6 @@ function app() {
     }
     CardContianer.append(createAddCard())
     document.getElementById('app').append(CardContianer);
-
 }
 
 
@@ -212,7 +211,7 @@ function generateInformation(key) {
     //--- input
     input.id = `${key}`;
     input.className = "user-input-value form-control border-danger bg-danger-subtle border-4";
-    input.setAttribute("type", key !== "userImg" ? "text" : "file");
+    input.setAttribute("type", "text");
     input.addEventListener('input', () => {
         if (input.value !== "" && isNaN(input.value)) {
             input.classList.add("checked", "bg-success-subtle", "border-success");
@@ -248,10 +247,10 @@ function addNewMember(arrayOfValue) {
     }
     //console.log(NewMember);
     teamMembers.push(NewMember);
-    // let userImg = `/resources/img/${NewMember.userImg}`
-    console.log(userImg);
+    let userImg = `/resources/img/${NewMember.userImg}`
     let container = document.getElementById('card-container');
-    container.insertBefore(createCard(NewMember.name, NewMember.surname, NewMember.role, NewMember.userImg), container.children[container.children.length - 1])
+    container.insertBefore(createCard(NewMember.name, NewMember.surname, NewMember.role, userImg), container.children[container.children.length - 1])
 }
 
 
+console.log(Array.prototype);
